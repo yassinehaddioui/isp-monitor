@@ -6,7 +6,7 @@
  * Time: 11:38 PM
  */
 
-namespace IspMonitor\Models;
+namespace IspMonitor\Models\Base;
 
 use JsonSerializable;
 

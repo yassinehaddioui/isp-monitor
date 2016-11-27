@@ -5,6 +5,7 @@ namespace IspMonitor\Models;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Psr\Log\InvalidArgumentException;
+use IspMonitor\Models\Base\BaseSerializableModel;
 
 class StreamSpeed extends BaseSerializableModel
 {
@@ -55,8 +56,11 @@ class StreamSpeed extends BaseSerializableModel
         return $this->unitTime;
     }
 
+    /**
+     * @return string
+     */
 
-    public function toString()
+    public function __toString()
     {
         return $this->unitSize . '/' . $this->unitTime;
     }

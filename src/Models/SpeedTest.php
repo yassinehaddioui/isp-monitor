@@ -8,6 +8,7 @@
 
 namespace IspMonitor\Models;
 
+use IspMonitor\Models\Base\BaseSerializableModel;
 
 class SpeedTest extends BaseSerializableModel
 {
@@ -91,23 +92,5 @@ class SpeedTest extends BaseSerializableModel
     {
         $this->fileSize = $fileSize;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    /**
-     * @param mixed $server
-     */
-    public function setServer($server)
-    {
-        $this->server = $server;
-    }
-
-
 
 }
