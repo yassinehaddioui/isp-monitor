@@ -10,43 +10,34 @@ namespace IspMonitor\Models;
 
 use IspMonitor\Models\Base\BaseSerializableModel;
 
+
 class SpeedTest extends BaseSerializableModel
 {
-    protected $uploadSpeed;
     protected $downloadSpeed;
-    protected $length;
+    protected $timeElapsed;
     protected $fileSize;
-    protected $server;
+    protected $url;
+    protected $timeout;
 
     /**
      * SpeedTest constructor.
-     * @param StreamSpeed $uploadSpeed
-     * @param StreamSpeed $downloadSpeed
+     * @param fValueUnit $downloadSpeed
+     * @param fValueUnit $timeElapsed
+     * @param fValueUnit $fileSize
+     * @param string $url
+     * @param int $timeout
      */
-    public function __construct(StreamSpeed $uploadSpeed,StreamSpeed $downloadSpeed)
+    public function __construct($downloadSpeed, $timeElapsed, $fileSize, $url, $timeout)
     {
-        $this->uploadSpeed = $uploadSpeed;
         $this->downloadSpeed = $downloadSpeed;
+        $this->timeElapsed = $timeElapsed;
+        $this->fileSize = $fileSize;
+        $this->url = $url;
+        $this->timeout = $timeout;
     }
 
     /**
-     * @return StreamSpeed
-     */
-    public function getUploadSpeed()
-    {
-        return $this->uploadSpeed;
-    }
-
-    /**
-     * @param StreamSpeed $uploadSpeed
-     */
-    public function setUploadSpeed($uploadSpeed)
-    {
-        $this->uploadSpeed = $uploadSpeed;
-    }
-
-    /**
-     * @return StreamSpeed
+     * @return fValueUnit
      */
     public function getDownloadSpeed()
     {
@@ -54,31 +45,35 @@ class SpeedTest extends BaseSerializableModel
     }
 
     /**
-     * @param StreamSpeed $downloadSpeed
+     * @param fValueUnit $downloadSpeed
+     * @return SpeedTest
      */
     public function setDownloadSpeed($downloadSpeed)
     {
         $this->downloadSpeed = $downloadSpeed;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return fValueUnit
      */
-    public function getLength()
+    public function getTimeElapsed()
     {
-        return $this->length;
+        return $this->timeElapsed;
     }
 
     /**
-     * @param mixed $length
+     * @param fValueUnit $timeElapsed
+     * @return SpeedTest
      */
-    public function setLength($length)
+    public function setTimeElapsed($timeElapsed)
     {
-        $this->length = $length;
+        $this->timeElapsed = $timeElapsed;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return fValueUnit
      */
     public function getFileSize()
     {
@@ -86,11 +81,52 @@ class SpeedTest extends BaseSerializableModel
     }
 
     /**
-     * @param mixed $fileSize
+     * @param fValueUnit $fileSize
+     * @return SpeedTest
      */
     public function setFileSize($fileSize)
     {
         $this->fileSize = $fileSize;
+        return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     * @return SpeedTest
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param int $timeout
+     * @return SpeedTest
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
+
+
+
 
 }

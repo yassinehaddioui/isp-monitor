@@ -8,18 +8,20 @@
 
 namespace IspMonitor\Controllers;
 
-use IspMonitor\Models\SpeedTest;
 use Slim\Http\Request;
 use Slim\Http\Response;
-
+use IspMonitor\Interfaces\SpeedTestService;
 
 
 
 class SpeedTestController extends BaseController
 {
+
+
     public function getSpeed(Request $request, Response $response, $args){
-        $streamSpeed = new \IspMonitor\Models\StreamSpeed();
-        $streamTest = new SpeedTest($streamSpeed, $streamSpeed);
-        return $response->withJson($streamTest);
+        /** @var SpeedTestService $service */
+        $service = $this->ci->get('speedTestService');
+        $data = $service->speedTest();
+        return $response->withJson(['data'  =>  $data]);
     }
 }

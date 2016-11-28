@@ -15,5 +15,9 @@ return [
             'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::ERROR,
         ],
+        'speedTestService'  =>  [
+            'timeout'   => 20,
+            'testUrl'   =>  'http://speedtest2.verticalbroadband.com/speedtest/random750x750.jpg'
+        ]
     ],
 ];

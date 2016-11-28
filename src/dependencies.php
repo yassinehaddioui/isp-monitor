@@ -17,3 +17,9 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+// Speed Test Service
+$container['speedTestService'] = function ($c) {
+    $settings = $c->get('settings')['speedTestService'];
+    return new \IspMonitor\Services\SpeedTestService($settings['timeout'], $settings['testUrl']);
+};
