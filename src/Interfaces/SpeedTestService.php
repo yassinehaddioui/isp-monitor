@@ -23,4 +23,27 @@ interface SpeedTestService
      * @return SpeedTest
      */
     public function speedTest();
+
+    /**
+     * @return string
+     */
+    public function getTestUrl();
+
+    /**
+     * @param string $testUrl
+     * @return SpeedTestService
+     */
+    public function setTestUrl($testUrl);
+
+    /**
+     * @return int
+     */
+    public function getTimeout();
+
+    /**
+     * @param int $timeout
+     * @return SpeedTestService
+     */
+    public function setTimeout($timeout);
+
 }

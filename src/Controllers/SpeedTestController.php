@@ -21,6 +21,10 @@ class SpeedTestController extends BaseController
     public function getSpeed(Request $request, Response $response, $args){
         /** @var SpeedTestService $service */
         $service = $this->ci->get('speedTestService');
+        if ($testUrl = $request->getParam('testUrl'))
+            $service->setTestUrl($testUrl);
+        if ($timeout = $request->getParam('timeout'))
+            $service->setTimeout($timeout);
         $data = $service->speedTest();
         return $response->withJson(['data'  =>  $data]);
     }

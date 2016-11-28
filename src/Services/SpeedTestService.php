@@ -40,6 +40,44 @@ class SpeedTestService
     }
 
     /**
+     * @return int
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param int $timeout
+     * @return SpeedTestService
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTestUrl()
+    {
+        return $this->testUrl;
+    }
+
+    /**
+     * @param string $testUrl
+     * @return SpeedTestService
+     */
+    public function setTestUrl($testUrl)
+    {
+        $this->testUrl = $testUrl;
+        return $this;
+    }
+
+
+
+    /**
      * @return SpeedTest
      */
     public function speedTest()
