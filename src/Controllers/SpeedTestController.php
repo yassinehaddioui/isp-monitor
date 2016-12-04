@@ -13,12 +13,10 @@ use Slim\Http\Response;
 use IspMonitor\Interfaces\SpeedTestService;
 
 
-
 class SpeedTestController extends BaseController
 {
-
-
-    public function getSpeed(Request $request, Response $response, $args){
+    public function getSpeed(Request $request, Response $response, $args)
+    {
         /** @var SpeedTestService $service */
         $service = $this->ci->get('speedTestService');
         if ($testUrl = $request->getParam('testUrl'))
@@ -26,6 +24,6 @@ class SpeedTestController extends BaseController
         if ($timeout = $request->getParam('timeout'))
             $service->setTimeout($timeout);
         $data = $service->speedTest();
-        return $response->withJson(['data'  =>  $data]);
+        return $response->withJson(['data' => $data]);
     }
 }
