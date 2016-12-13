@@ -17,7 +17,7 @@ return [
         ],
         'speedTestService'  =>  [
             'timeout'   => 20,
-            'testUrl'   =>  'http://speedtest2.verticalbroadband.com/speedtest/random750x750.jpg'
+            'testUrl'   =>  'http://speedtest2.verticalbroadband.com/speedtest/random3000x3000.jpg'
         ]
     ],
 ];
