@@ -19,7 +19,7 @@ use IspMonitor\Models\fValueUnit;
  */
 class SpeedTestService
 {
-    const DEFAULT_TEST_URL = 'http://speedtest2.verticalbroadband.com/speedtest/random750x750.jpg';
+    const DEFAULT_TEST_URL = 'http://speedtest2.verticalbroadband.com/speedtest/random3000x3000.jpg';
     const DEFAULT_TIMEOUT = 20;
     const CONNECT_TIMEOUT = 5;
     const TIME_PRECISION = 4;
