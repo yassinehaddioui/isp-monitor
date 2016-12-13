@@ -11,7 +11,7 @@ namespace IspMonitor\Exceptions;
 
 use Exception;
 
-class SpeedTestTimeOutException extends \Exception
+class SpeedTestTimeOutException extends \HttpException
 {
     protected $code = 408;
 

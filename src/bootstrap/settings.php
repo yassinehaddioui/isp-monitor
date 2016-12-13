@@ -18,6 +18,9 @@ return [
         'speedTestService'  =>  [
             'timeout'   => 20,
             'testUrl'   =>  'http://speedtest2.verticalbroadband.com/speedtest/random3000x3000.jpg'
+        ],
+        'authService'  =>  [
+            'apiKey'    =>  'yassineX'
         ]
     ],
 ];

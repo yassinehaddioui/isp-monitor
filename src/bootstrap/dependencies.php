@@ -5,21 +5,28 @@ $container = $app->getContainer();
 
 // view renderer
 $container['renderer'] = function ($c) {
-    $settings = $c->get('settings')['renderer'];
-    return new Slim\Views\PhpRenderer($settings['template_path']);
+    $serviceProvider = new \IspMonitor\Providers\ServiceProvider($c);
+    return $serviceProvider->getRenderer();
 };
 
 // monolog
 $container['logger'] = function ($c) {
-    $settings = $c->get('settings')['logger'];
-    $logger = new Monolog\Logger($settings['name']);
-    $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
-    return $logger;
+    $serviceProvider = new \IspMonitor\Providers\ServiceProvider($c);
+    return $serviceProvider->getLogger();
 };
 
 // Speed Test Service
 $container['speedTestService'] = function ($c) {
-    $settings = $c->get('settings')['speedTestService'];
-    return new \IspMonitor\Services\SpeedTestService($settings['timeout'], $settings['testUrl']);
+    $serviceProvider = new \IspMonitor\Providers\ServiceProvider($c);
+    return $serviceProvider->getSpeedTestService();
+};
+
+$container['authService'] = function ($c) {
+    $serviceProvider = new \IspMonitor\Providers\ServiceProvider($c);
+    return $serviceProvider->getAuthService();
+};
+
+$container['errorHandler'] = function ($c) {
+    $serviceProvider = new \IspMonitor\Providers\ServiceProvider($c);
+    return $serviceProvider->getErrorHandler();
 };

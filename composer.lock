@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6a15606d3e8ee63528f8736d397e6445",
-    "content-hash": "67e1fc6e2d860a5a8287448b4f233536",
+    "hash": "a69c2c2c6e06baf0aa8bddec50192324",
+    "content-hash": "9272c1393d64b768a3af8bcf80fe286c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -471,6 +471,39 @@
                 "router"
             ],
             "time": "2016-11-20 20:48:49"
+        },
+        {
+            "name": "sumeko/http-exception",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sumeko/php-http-exception.git",
+                "reference": "0c19327cb955465a42ecc50ad13b5a57dc755bc4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sumeko/php-http-exception/zipball/0c19327cb955465a42ecc50ad13b5a57dc755bc4",
+                "reference": "0c19327cb955465a42ecc50ad13b5a57dc755bc4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sumeko\\Http\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sumeko",
+                    "email": "sumeko@live.com"
+                }
+            ],
+            "description": "HTTP Error Exceptions",
+            "time": "2015-06-14 21:49:12"
         }
     ],
     "packages-dev": [
