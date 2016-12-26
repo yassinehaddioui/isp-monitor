@@ -27,6 +27,35 @@ class ServiceProvider
         $this->container = $container;
     }
 
+    /**
+     * @return ContainerInterface
+     */
+
+    public function initializeContainer()
+    {
+        $this->container['renderer'] = function ($c) {
+            return $this->getRenderer();
+        };
+
+        $this->container['logger'] = function ($c) {
+            return $this->getLogger();
+        };
+
+        $this->container['speedTestService'] = function ($c) {
+            return $this->getSpeedTestService();
+        };
+
+        $this->container['authService'] = function ($c) {
+            return $this->getAuthService();
+        };
+
+        $this->container['errorHandler'] = function ($c) {
+            return $this->getErrorHandler();
+        };
+
+        return $this->container;
+    }
+
     public function getRenderer()
     {
         $settings = $this->container->get('settings')['renderer'];
@@ -48,12 +77,14 @@ class ServiceProvider
         return new SpeedTestService($settings['timeout'], $settings['testUrl']);
     }
 
-    public function getAuthService(){
+    public function getAuthService()
+    {
         $settings = $this->container->get('settings')['authService'];
         return new AuthService($settings['apiKey']);
     }
 
-    public function getErrorHandler() {
+    public function getErrorHandler()
+    {
         return new ErrorHandlingService();
     }
 

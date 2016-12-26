@@ -9,10 +9,9 @@
 namespace IspMonitor\Exceptions;
 
 
-use Exception;
+use Sumeko\Http\Exception\RequestTimeoutException;
 
-class SpeedTestTimeOutException extends \HttpException
+class SpeedTestTimeOutException extends RequestTimeoutException
 {
-    protected $code = 408;
 
 }
