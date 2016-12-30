@@ -14,15 +14,13 @@ use MongoDB\BSON\Serializable;
 class RecordingService
 {
     /** @var  MongoDBDataProvider $dataProvider */
-    private $dataProvider;
+    protected $dataProvider;
 
     /**
      * @var \MongoDB\Client
      */
-    private $client;
+    protected $client;
 
-
-    const DEFAULT_GET_LIMIT = 100;
 
     /**
      * SpeedTestRecordingService constructor.
@@ -36,20 +34,36 @@ class RecordingService
 
 
     /**
+     * Inserts a serializable object into a specific collection within a specific db.
      * @param Serializable $serializable
      * @param string $db
      * @param string $collection
      * @return \MongoDB\InsertOneResult
      */
 
-    public function insertOne(Serializable $serializable, $db, $collection){
+    public function insertOne(Serializable $serializable, $db, $collection)
+    {
         $collection = $this->client->selectCollection($db, $collection);
         return $collection->insertOne($serializable);
     }
 
-    public function getCollection($db, $collection) {
+    /** Returns a specific collection from a specific db.
+     * @param $db
+     * @param $collection
+     * @return \MongoDB\Collection
+     */
+    public function getCollection($db, $collection)
+    {
         return $this->client->selectCollection($db, $collection);
 
+    }
+
+    /**
+     * @return \MongoDB\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 
 }

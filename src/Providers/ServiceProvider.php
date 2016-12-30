@@ -6,6 +6,7 @@ namespace IspMonitor\Providers;
 use IspMonitor\Services\AuthService;
 use IspMonitor\Services\ErrorHandlingService;
 use IspMonitor\Services\RecordingService;
+use IspMonitor\Services\SpeedTestRecordingService;
 use IspMonitor\Services\SpeedTestService;
 use Monolog;
 use Slim;
@@ -60,6 +61,10 @@ class ServiceProvider
 
         $this->container['recordingService'] = function ($c) {
             return $this->getRecordingService();
+        };
+
+        $this->container['speedTestRecordingService'] = function ($c) {
+            return $this->getSpeedTestRecordingService();
         };
 
         return $this->container;
@@ -133,6 +138,14 @@ class ServiceProvider
 
     public function getRecordingService(){
         return new RecordingService($this->getMongoDBDataProvider());
+    }
+
+    /**
+     * @return SpeedTestRecordingService
+     */
+
+    public function getSpeedTestRecordingService(){
+        return new SpeedTestRecordingService($this->getMongoDBDataProvider());
     }
 
 }

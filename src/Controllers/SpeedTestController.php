@@ -10,6 +10,7 @@ namespace IspMonitor\Controllers;
 
 use Interop\Container\ContainerInterface;
 use IspMonitor\Services\RecordingService;
+use IspMonitor\Services\SpeedTestRecordingService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use IspMonitor\Interfaces\SpeedTestService;
@@ -27,8 +28,6 @@ class SpeedTestController extends BaseController
      */
     private $recordingService;
 
-    const DB_NAME = 'speedtest';
-    const COLLECTION_NAME = 'logs';
     const GET_LOGS_DEFAULT_LIMIT = 1000;
 
     /**
@@ -56,7 +55,7 @@ class SpeedTestController extends BaseController
         $data = $service->speedTest();
         if ($save = $request->getParam('save')) {
             $recordingService = $this->getRecordingService();
-            $recordingService->insertOne($data, static::DB_NAME, static::COLLECTION_NAME);
+            $recordingService->insertSpeedTest($data);
         }
         $meta = ['saved' => $save ? 1 : 0];
         return $this->jsonDataResponse($response, $data, $meta);
@@ -74,8 +73,7 @@ class SpeedTestController extends BaseController
         $recordingService = $this->getRecordingService();
         $limit = $request->getParam('limit') ?: self::GET_LOGS_DEFAULT_LIMIT;
         $options = ["sort" => ["timestamp" => -1], "limit" => intval($limit)];
-        $collection = $recordingService->getCollection(static::DB_NAME, static::COLLECTION_NAME);
-        $data = $collection->find([], $options)->toArray();
+        $data = $recordingService->getLogs([], $options);
         $meta = ['options'  =>  $options];
         return $this->jsonDataResponse($response, $data, $meta);
     }
@@ -93,12 +91,12 @@ class SpeedTestController extends BaseController
 
     /**
      * Extracts the Recording Service from the container.
-     * @return RecordingService
+     * @return SpeedTestRecordingService
      */
     protected function getRecordingService()
     {
         if (empty($this->recordingService))
-            $this->recordingService = $this->container->get('recordingService');
+            $this->recordingService = $this->container->get('speedTestRecordingService');
         return $this->recordingService;
     }
 }
