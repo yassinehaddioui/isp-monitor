@@ -39,7 +39,7 @@ Optional (GET) params are:
  GET /speedtest/logs
  Optional (GET) params are:
   - limit: integer, default is 1000
- ```
+```
  {
      "data": [
          {
@@ -112,15 +112,15 @@ Optional (GET) params are:
          }
      }
  }
- ```
+```
  
 ## Authorization
  You need to pass your apiKey as an `Authorization` header or `apiKey` GET parameter.
  Otherwise, you'll get:
- ```
+```
  {
      "statusCode": 401,
      "message": "Unauthorized",
      "error": true
  }
- ```
+```
