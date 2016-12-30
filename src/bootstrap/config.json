@@ -1,0 +1,24 @@
+{
+  "settings": {
+    "displayErrorDetails": true,
+    "addContentLengthHeader": false,
+    "renderer": {
+      "template_path": ".\/templates\/"
+    },
+    "logger": {
+      "name": "slim-app",
+      "path": ".\/logs\/app.log",
+      "level": 400
+    },
+    "speedTestService": {
+      "timeout": 20,
+      "testUrl": "http:\/\/speedtest2.verticalbroadband.com\/speedtest\/random3000x3000.jpg"
+    },
+    "authService": {
+      "apiKeys": ["yassineX", "yassineY"]
+    },
+    "mongoDB": {
+      "connectionString":"mongodb:\/\/localhost:27017"
+    }
+  }
+}
