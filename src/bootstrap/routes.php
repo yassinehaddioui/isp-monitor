@@ -22,3 +22,7 @@ $app->get('/', function (Request $request, Response $response, $args) use ($app)
     $controller = new \IspMonitor\Controllers\IndexController($service);
     return $controller->getIndex($request, $response, $args);
 });
+
+$app->get('/auth-check', function (Request $request, Response $response, $args) use ($app) {
+    return (new Response(200))->withJson(['Authorized'  =>  true]);
+});
