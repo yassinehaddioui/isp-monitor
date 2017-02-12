@@ -124,3 +124,9 @@ Optional (GET) params are:
      "error": true
  }
 ```
+
+## Development
+Start the local PHP server by running
+```
+php -S localhost:8888 -t public public/index.php
+```

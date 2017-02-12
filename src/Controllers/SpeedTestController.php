@@ -74,7 +74,7 @@ class SpeedTestController extends BaseController
         $limit = $request->getParam('limit') ?: self::GET_LOGS_DEFAULT_LIMIT;
         $options = ["sort" => ["timestamp" => -1], "limit" => intval($limit)];
         $data = $recordingService->getLogs([], $options);
-        $meta = ['options'  =>  $options];
+        $meta = ['options'  =>  $options, 'count'   =>  count($data)];
         return $this->jsonDataResponse($response, $data, $meta);
     }
 
