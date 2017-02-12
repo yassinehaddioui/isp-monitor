@@ -2,17 +2,12 @@
 
 namespace Tests\Functional;
 
+use Psr\Http\Message\RequestInterface;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Environment;
 
-/**
- * This is an example class that shows how you could set up a method that
- * runs the application. Note that it doesn't cover all use-cases and is
- * tuned to the specifics of this skeleton app, so if your needs are
- * different, you'll need to change it.
- */
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -32,6 +27,28 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
     {
+        $request = $this->getMockRequest($requestMethod, $requestUri, $requestData);
+
+        $app = $this->getApp($this->withMiddleware);
+
+        // Set up a response object
+        $response = new Response();
+
+        // Process the application
+        $response = $app->process($request, $response);
+
+        // Return the response
+        return $response;
+    }
+
+    /**
+     * @param $requestMethod
+     * @param $requestUri
+     * @param null $requestData
+     * @return RequestInterface
+     */
+    protected function getMockRequest($requestMethod, $requestUri, $requestData = null)
+    {
         // Create a mock environment for testing with
         $environment = Environment::mock(
             [
@@ -47,31 +64,28 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         if (isset($requestData)) {
             $request = $request->withParsedBody($requestData);
         }
+        return $request;
+    }
 
-        // Set up a response object
-        $response = new Response();
-
+    public function getApp($withMiddleware = true)
+    {
         // Use the application settings
-        $settings = require __DIR__ . '/../../src/settings.php';
+        $settings = require __DIR__ . '/../../src/bootstrap/settings.php';
 
         // Instantiate the application
         $app = new App($settings);
 
         // Set up dependencies
-        require __DIR__ . '/../../src/dependencies.php';
+        require __DIR__ . '/../../src/bootstrap/dependencies.php';
 
         // Register middleware
-        if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/middleware.php';
+        if ($withMiddleware) {
+            require __DIR__ . '/../../src/bootstrap/middleware.php';
         }
 
         // Register routes
-        require __DIR__ . '/../../src/routes.php';
+        require __DIR__ . '/../../src/bootstrap/routes.php';
 
-        // Process the application
-        $response = $app->process($request, $response);
-
-        // Return the response
-        return $response;
+        return $app;
     }
 }

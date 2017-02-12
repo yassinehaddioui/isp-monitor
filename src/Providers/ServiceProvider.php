@@ -3,7 +3,7 @@
 
 namespace IspMonitor\Providers;
 
-use IspMonitor\Services\AuthService;
+use IspMonitor\Services\ArrayBasedAuthService;
 use IspMonitor\Services\ErrorHandlingService;
 use IspMonitor\Services\RecordingService;
 use IspMonitor\Services\SpeedTestRecordingService;
@@ -23,14 +23,15 @@ class ServiceProvider
      * @var ContainerInterface
      */
     private $container;
+
     /**
      * ServiceProvider constructor.
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->settings = $container->get('settings');
         $this->container = $container;
+        $this->settings = $this->container->get('settings');
     }
 
     /**
@@ -104,13 +105,13 @@ class ServiceProvider
     }
 
     /**
-     * @return AuthService
+     * @return ArrayBasedAuthService
      */
 
     public function getAuthService()
     {
         $settings = $this->settings['authService'];
-        return new AuthService($settings['apiKeys']);
+        return new ArrayBasedAuthService($settings['apiKeys']);
     }
 
     /**
@@ -126,7 +127,8 @@ class ServiceProvider
      * @return MongoDBDataProvider
      */
 
-    public  function getMongoDBDataProvider(){
+    public function getMongoDBDataProvider()
+    {
         $settings = !empty($this->settings['mongoDB']['connectionString'])
             ? $this->settings['mongoDB']['connectionString'] : null;
         return new MongoDBDataProvider($settings);
@@ -136,7 +138,8 @@ class ServiceProvider
      * @return RecordingService
      */
 
-    public function getRecordingService(){
+    public function getRecordingService()
+    {
         return new RecordingService($this->getMongoDBDataProvider());
     }
 
@@ -144,7 +147,8 @@ class ServiceProvider
      * @return SpeedTestRecordingService
      */
 
-    public function getSpeedTestRecordingService(){
+    public function getSpeedTestRecordingService()
+    {
         return new SpeedTestRecordingService($this->getMongoDBDataProvider());
     }
 

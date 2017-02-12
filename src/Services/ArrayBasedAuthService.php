@@ -1,15 +1,10 @@
 <?php
-/**
- * -
- * User: yassinehaddioui
- * Date: 12/12/16
- * Time: 10:25 PM
- */
 
 namespace IspMonitor\Services;
 
 
 use Psr\Http\Message\ServerRequestInterface;
+use IspMonitor\Interfaces\AuthService;
 
 /**
  * Very simple authorization service. Checks the "Authorization" header for the API key set in the config.
@@ -17,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @package IspMonitor\Services
  */
 
-class AuthService implements \IspMonitor\Interfaces\AuthService
+class ArrayBasedAuthService implements AuthService
 {
     /**
      * @var array $apiKeys
