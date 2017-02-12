@@ -45,7 +45,7 @@ class SpeedTestRecordingService extends RecordingService
     {
         $collection = $this->getLogsCollection();
         /* Init `projection` if not set */
-        $options['projection'] = $options['projection'] ?: [];
+        $options['projection'] = !empty($options['projection']) ? $options['projection'] : [];
         /* Set or override `_id` to 0 */
         $options['projection']['_id'] = 0;
         $data = $collection->find($filters, $options)->toArray() ?: [];
