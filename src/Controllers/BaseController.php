@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by -
- * User: yassinehaddioui
- * Date: 11/27/16
- * Time: 12:05 AM
- */
 
 namespace IspMonitor\Controllers;
 
 use Interop\Container\ContainerInterface;
+use IspMonitor\Utilities\Environment;
 use Slim\Http\Response;
 
 class BaseController
@@ -45,7 +40,10 @@ class BaseController
 
     protected function jsonDataResponse(Response $response, $data, $meta = [])
     {
-        $result = !empty($meta) ? ['data' => $data, 'meta' => $meta] :['data' => $data] ;
+        if (!empty($meta)) {
+            $meta['appVersion'] = Environment::getPackageVersion();
+        }
+        $result = !empty($meta) ? ['data' => $data, 'meta' => $meta] : ['data' => $data];
         return $response->withJson($result);
     }
 

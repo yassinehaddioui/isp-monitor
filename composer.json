@@ -4,6 +4,7 @@
     "keywords": ["microframework", "rest", "router", "psr7"],
     "homepage": "https://github.com/yassinehaddioui/isp-monitor",
     "license": "MIT",
+    "version": "0.1.12",
     "authors": [
         {
             "name": "Yassine Haddioui",
