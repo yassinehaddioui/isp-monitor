@@ -16,6 +16,16 @@ $app->get('/speedtest/logs', function (Request $request, Response $response) use
     return $controller->getResults($request, $response);
 });
 
+$app->get('/cache/{key}', function (Request $request, Response $response, $args) use ($app) {
+    $service = $app->getContainer()->get('cachingService');
+    return (new \IspMonitor\Controllers\CacheController($service))->getData($request, $response, $args);
+});
+
+$app->post('/cache/{key}', function (Request $request, Response $response, $args) use ($app) {
+    $service = $app->getContainer()->get('cachingService');
+    return (new \IspMonitor\Controllers\CacheController($service))->setData($request, $response, $args);
+});
+
 
 $app->get('/', function (Request $request, Response $response, $args) use ($app) {
     $service = $app->getContainer()->get('renderer');
@@ -24,5 +34,5 @@ $app->get('/', function (Request $request, Response $response, $args) use ($app)
 });
 
 $app->get('/auth-check', function (Request $request, Response $response, $args) use ($app) {
-    return (new Response(200))->withJson(['Authorized'  =>  true]);
+    return (new Response(200))->withJson(['Authorized' => true]);
 });

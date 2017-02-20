@@ -4,6 +4,7 @@
 namespace IspMonitor\Providers;
 
 use IspMonitor\Services\ArrayBasedAuthService;
+use IspMonitor\Services\CachingService;
 use IspMonitor\Services\ErrorHandlingService;
 use IspMonitor\Services\RecordingService;
 use IspMonitor\Services\SpeedTestRecordingService;
@@ -66,6 +67,10 @@ class ServiceProvider
 
         $this->container['speedTestRecordingService'] = function ($c) {
             return $this->getSpeedTestRecordingService();
+        };
+
+        $this->container['cachingService'] = function ($c) {
+            return $this->getCachingService();
         };
 
         return $this->container;
@@ -150,6 +155,25 @@ class ServiceProvider
     public function getSpeedTestRecordingService()
     {
         return new SpeedTestRecordingService($this->getMongoDBDataProvider());
+    }
+
+    /**
+     * @return RedisCacheProvider
+     */
+
+    public function getRedisCacheProvider()
+    {
+        $settings = !empty($this->settings['redis'])
+            ? $this->settings['redis'] : null;
+        return new RedisCacheProvider($settings);
+    }
+
+    /**
+     * @return CachingService
+     */
+    public function getCachingService()
+    {
+        return new CachingService($this->getRedisCacheProvider());
     }
 
 }

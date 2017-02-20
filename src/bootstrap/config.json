@@ -24,7 +24,7 @@
       "connectionString": "mongodb:\/\/isp-monitor-mongo:27017"
     },
     "redis": {
-      "host": "127.0.0.1",
+      "host": "isp-monitor-redis",
       "port": 6379
     }
   }
