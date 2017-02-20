@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: yassinehaddioui
- * Date: 12/3/16
- * Time: 9:25 PM
- */
+
 
 namespace IspMonitor\Controllers;
 
