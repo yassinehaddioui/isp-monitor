@@ -1,7 +1,3 @@
-###############################################################################
-#                          Generated on phpdocker.io                          #
-###############################################################################
-
 isp-monitor-memcached:
   image: phpdockerio/memcached:latest
   container_name: isp-monitor-memcached
@@ -21,6 +17,25 @@ isp-monitor-webserver:
   links:
    - isp-monitor-php-fpm
 
+isp-monitor-mongodata:
+  container_name: isp-monitor-mongodata
+  image: mongo:latest
+  volumes:
+    - /data/db
+  command: --break-mongo
+
+isp-monitor-mongo:
+  container_name: isp-monitor-mongo
+  image: mongo:latest
+  environment:
+      - MONGODB_USERNAME=mongodb
+      - MONGODB_PASSWORD=mongodb
+  volumes_from:
+    - isp-monitor-mongodata
+  ports:
+    - "27017:27017"
+  command: --smallfiles --rest
+
 isp-monitor-php-fpm:
   build: .
   dockerfile: php-fpm/Dockerfile
@@ -31,3 +46,4 @@ isp-monitor-php-fpm:
   links:
     - isp-monitor-memcached
     - isp-monitor-redis
+    - isp-monitor-mongo
