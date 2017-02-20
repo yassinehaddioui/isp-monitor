@@ -8,7 +8,7 @@ RUN apt-get update \
 
 WORKDIR "/var/www/isp-monitor"
 
-RUN	apt-get install pkg-config
+
 RUN 	pecl install mongodb
 
 RUN echo "extension=mongodb.so" > /etc/php/7.1/fpm/conf.d/20-mongodb.ini && \

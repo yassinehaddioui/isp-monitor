@@ -1,6 +1,6 @@
-isp-monitor-memcached:
-  image: phpdockerio/memcached:latest
-  container_name: isp-monitor-memcached
+#isp-monitor-memcached:
+#  image: phpdockerio/memcached:latest
+#  container_name: isp-monitor-memcached
 
 isp-monitor-redis:
   image: phpdockerio/redis:latest
@@ -44,6 +44,5 @@ isp-monitor-php-fpm:
     - ..:/var/www/isp-monitor
     - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
   links:
-    - isp-monitor-memcached
     - isp-monitor-redis
     - isp-monitor-mongo
