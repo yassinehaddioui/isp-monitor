@@ -40,10 +40,11 @@ class BaseController
 
     protected function jsonDataResponse(Response $response, $data, $meta = [])
     {
+        $result = ['data' => $data];
         if (!empty($meta)) {
             $meta['appVersion'] = Environment::getPackageVersion();
+            $result['meta'] = $meta;
         }
-        $result = !empty($meta) ? ['data' => $data, 'meta' => $meta] : ['data' => $data];
         return $response->withJson($result);
     }
 

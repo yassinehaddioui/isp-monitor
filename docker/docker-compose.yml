@@ -27,9 +27,6 @@ isp-monitor-mongodata:
 isp-monitor-mongo:
   container_name: isp-monitor-mongo
   image: mongo:latest
-  environment:
-      - MONGODB_USERNAME=mongodb
-      - MONGODB_PASSWORD=mongodb
   volumes_from:
     - isp-monitor-mongodata
   ports:

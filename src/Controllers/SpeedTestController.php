@@ -57,7 +57,7 @@ class SpeedTestController extends BaseController
             $recordingService = $this->getRecordingService();
             $recordingService->insertSpeedTest($data);
         }
-        $meta = ['saved' => $save ? 1 : 0];
+        $meta = ['saved' => $save ? true : false];
         return $this->jsonDataResponse($response, $data, $meta);
     }
 
