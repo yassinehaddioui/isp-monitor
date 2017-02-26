@@ -25,6 +25,46 @@ class EventRepository extends BaseRepository
     }
 
     /**
+     * Get all events that haven't ended yet.
+     * @return Event[]
+     */
+
+    public function getCurrentAndFutureEvents()
+    {
+        $filter = [
+            'dateEnd' => ['$gte' => time()],
+        ];
+        return $this->normalize($this->getCollection()->find($filter));
+    }
+
+    /**
+     * Get all events where registration is open.
+     * @return Event[]
+     */
+
+    public function getEventsOpenForRegistration()
+    {
+        $filter = [
+            'registrationDateEnd' => ['$gt' => time()],
+            'registrationDateStart' => ['$lte' => time()],
+        ];
+        return $this->normalize($this->getCollection()->find($filter));
+    }
+
+    /**
+     * Get all events that haven't started yet.
+     * @return Event[]
+     */
+
+    public function getUpcomingEvents()
+    {
+        $filter = [
+            'dateStart' => ['$gt' => time()],
+        ];
+        return $this->normalize($this->getCollection()->find($filter));
+    }
+
+    /**
      * @param Event $event
      * @return Event
      */
@@ -34,6 +74,10 @@ class EventRepository extends BaseRepository
             $event->setId(uniqid(static::ID_PREFIX, true));
         if (!$event->getDateCreated())
             $event->setDateCreated(time());
+        if (!$event->getRegistrationDateStart())
+            $event->setRegistrationDateStart(time());
+        if (!$event->getRegistrationDateEnd())
+            $event->setRegistrationDateEnd($event->getDateEnd());
         $event->setLastUpdate(time());
         $event->validate();
         return $event;
@@ -59,7 +103,7 @@ class EventRepository extends BaseRepository
 
     /**
      * @param Cursor $entities
-     * @return array
+     * @return Event[]
      */
 
     protected function normalize($entities)

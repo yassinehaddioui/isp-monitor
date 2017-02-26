@@ -39,7 +39,7 @@ class ReservationService
 
     const RESOURCE_NAME = 'reservation';
     const LOCK_TTL = 500;
-    const AVAILABILITY_CACHE_TTL = 10;
+    const AVAILABILITY_CACHE_TTL = 60;
 
     /**
      * ReservationService constructor.
