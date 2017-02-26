@@ -5,6 +5,7 @@
     "homepage": "https://github.com/yassinehaddioui/isp-monitor",
     "license": "MIT",
     "version": "0.1.12",
+    "minimum-stability":"dev",
     "authors": [
         {
             "name": "Yassine Haddioui",

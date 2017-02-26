@@ -36,6 +36,15 @@ class ReservationRepository extends BaseRepository
     }
 
     /**
+     * @param $email
+     * @return Reservation[]
+     */
+    public function findByEmail($email)
+    {
+        return $this->normalize($this->getCollection()->find(['email' => $email]));
+    }
+
+    /**
      * @param Reservation $reservation
      * @return Reservation
      */

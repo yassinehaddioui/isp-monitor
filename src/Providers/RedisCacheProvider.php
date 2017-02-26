@@ -67,7 +67,7 @@ class RedisCacheProvider implements CacheProvider
 
     public function delete($keys)
     {
-       return $this->redis->delete($keys);
+        $this->redis->delete($keys);
     }
 
     /**

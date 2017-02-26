@@ -49,7 +49,7 @@ class CachingService implements CacheProvider
             throw new InvalidArgumentException('Key is needed');
         if (empty($value))
             throw new InvalidArgumentException('Value cannot be empty.');
-        return $this->cacheProvider->set($key, $value, $ttl);
+        $this->cacheProvider->set($key, $value, $ttl);
     }
 
     /**

@@ -12,7 +12,10 @@ namespace IspMonitor\Utilities;
 class Environment
 {
     private static $composerJson;
+    private static $config = [];
+
     const COMPOSER_PATH = __DIR__ . '/../../composer.json';
+    const DEFAULT_CONFIG_PATH = __DIR__ . '/../bootstrap/config.json';
 
     /**
      * Returns the whole composer.json as an array
@@ -37,4 +40,14 @@ class Environment
             return static::getComposerJson()['version'];
         return '';
     }
+
+    public static function getConfig(){
+        if (!static::$config)
+        {
+            static::$config = defined("CONFIG_FILE_PATH") && file_exists(CONFIG_FILE_PATH) ? json_decode(file_get_contents(CONFIG_FILE_PATH), true)
+                : json_decode(file_get_contents(static::DEFAULT_CONFIG_PATH), true);
+        }
+        return static::$config;
+    }
+
 }
