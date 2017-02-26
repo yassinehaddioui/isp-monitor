@@ -1,10 +1,9 @@
 <?php
 // Routes
 
-use IspMonitor\Controllers\SpeedTestController;
 use Slim\Http\Request;
 use Slim\Http\Response;
-
+use IspMonitor\Controllers;
 
 
 $app->get('/cache/{key}', function (Request $request, Response $response, $args) use ($app) {
@@ -34,6 +33,8 @@ $app->get('/test', function (Request $request, Response $response, $args) use ($
 });
 
 $app->post('/api/1.0/reservation', function (Request $request, Response $response, $args) use ($app) {
-    $testController = new \IspMonitor\Controllers\TestController($app->getContainer());
-    return $testController->getTest($request, $response, $args);
+    /** @var \IspMonitor\Services\ReservationService $reservationService */
+    $reservationService = $app->getContainer()->get('reservationService');
+    $controller = new Controllers\ReservationController($reservationService);
+    return $controller->makeReservation($request, $response, $args);
 });

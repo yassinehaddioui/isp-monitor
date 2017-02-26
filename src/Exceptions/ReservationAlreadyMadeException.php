@@ -9,9 +9,10 @@
 namespace IspMonitor\Exceptions;
 
 
-use Sumeko\Http\Exception\InternalServerErrorException;
+use Sumeko\Http\Exception\ConflictException;
 
-class ReservationAlreadyMadeException extends InternalServerErrorException
+
+class ReservationAlreadyMadeException extends ConflictException
 {
     protected $message = 'Reservation already made.';
 }

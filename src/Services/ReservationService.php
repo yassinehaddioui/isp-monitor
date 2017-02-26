@@ -9,6 +9,7 @@
 namespace IspMonitor\Services;
 
 
+use Assert\InvalidArgumentException;
 use IspMonitor\Exceptions\EventClosedException;
 use IspMonitor\Exceptions\ReservationAlreadyMadeException;
 use IspMonitor\Exceptions\UnableToAcquireLockException;
@@ -18,6 +19,7 @@ use IspMonitor\Repositories\EventRepository;
 use IspMonitor\Repositories\ReservationRepository;
 use RandomLib\Factory;
 use SecurityLib\Strength;
+use Sumeko\Http\Exception\BadRequestException;
 use Sumeko\Http\Exception\FailedDependencyException;
 use Sumeko\Http\Exception\NotFoundException;
 
@@ -86,6 +88,8 @@ class ReservationService
 
     public function makeReservation($email, $eventId, $browserSignature = '', $ipAddress = '')
     {
+        if (!$email || !$eventId)
+            throw new BadRequestException('Email and Event ID are required.');
         if (!$this->redLockService || !$this->cachingService)
             throw new FailedDependencyException('Missing RedLockService and/or Caching Service.');
 

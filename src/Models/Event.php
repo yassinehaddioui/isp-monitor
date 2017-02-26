@@ -273,6 +273,9 @@ class Event extends Base\BaseSerializableModel
             $exceptions[] = "Name is required.";
         if (!$this->getDateStart() || !$this->getDateEnd())
             $exceptions[] = "Date start/end required.";
+        if ($this->getDateEnd() < time())
+            $exceptions[] = "Date end cannot be in the past.";
+        
         if (!empty($exceptions))
             throw new \InvalidArgumentException(implode(", ", $exceptions));
     }
