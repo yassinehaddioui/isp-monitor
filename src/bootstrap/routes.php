@@ -36,3 +36,8 @@ $app->get('/', function (Request $request, Response $response, $args) use ($app)
 $app->get('/auth-check', function (Request $request, Response $response, $args) use ($app) {
     return (new Response(200))->withJson(['Authorized' => true]);
 });
+
+$app->get('/test', function (Request $request, Response $response, $args) use ($app) {
+    $testController = new \IspMonitor\Controllers\TestController($app->getContainer());
+    return $testController->getTest($request, $response, $args);
+});

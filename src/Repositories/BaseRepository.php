@@ -8,6 +8,7 @@
 
 namespace IspMonitor\Repositories;
 
+use IspMonitor\Models\Event;
 use IspMonitor\Services\MongoDataService;
 
 
@@ -40,7 +41,7 @@ abstract class BaseRepository
 
     /**
      * @param $id
-     * @return mixed|null
+     * @return Event|null
      */
     public function findById($id)
     {

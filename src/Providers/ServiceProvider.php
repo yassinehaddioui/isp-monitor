@@ -61,8 +61,8 @@ class ServiceProvider
             return $this->getErrorHandler();
         };
 
-        $this->container['recordingService'] = function ($c) {
-            return $this->getRecordingService();
+        $this->container['dataService'] = function ($c) {
+            return $this->getMongoDataService();
         };
 
         $this->container['speedTestRecordingService'] = function ($c) {
@@ -143,7 +143,7 @@ class ServiceProvider
      * @return MongoDataService
      */
 
-    public function getRecordingService()
+    public function getMongoDataService()
     {
         return new MongoDataService($this->getMongoDBDataProvider());
     }

@@ -45,6 +45,16 @@ class ReservationRepository extends BaseRepository
     }
 
     /**
+     * @param string $email
+     * @param string $eventId
+     * @return Reservation[]
+     */
+    public function findByEmailAndEventId($email, $eventId)
+    {
+        return $this->normalize($this->getCollection()->find(['email' => $email, 'eventId'  =>  $eventId]));
+    }
+
+    /**
      * @param Reservation $reservation
      * @return Reservation
      */
