@@ -6,15 +6,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-$app->get('/speedtest', function (Request $request, Response $response) use ($app) {
-    $controller = new SpeedTestController($app->getContainer());
-    return $controller->getSpeed($request, $response);
-});
-
-$app->get('/speedtest/logs', function (Request $request, Response $response) use ($app) {
-    $controller = new SpeedTestController($app->getContainer());
-    return $controller->getResults($request, $response);
-});
 
 $app->get('/cache/{key}', function (Request $request, Response $response, $args) use ($app) {
     $service = $app->getContainer()->get('cachingService');
@@ -38,6 +29,11 @@ $app->get('/auth-check', function (Request $request, Response $response, $args) 
 });
 
 $app->get('/test', function (Request $request, Response $response, $args) use ($app) {
+    $testController = new \IspMonitor\Controllers\TestController($app->getContainer());
+    return $testController->getTest($request, $response, $args);
+});
+
+$app->post('/api/1.0/reservation', function (Request $request, Response $response, $args) use ($app) {
     $testController = new \IspMonitor\Controllers\TestController($app->getContainer());
     return $testController->getTest($request, $response, $args);
 });

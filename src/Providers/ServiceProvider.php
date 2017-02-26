@@ -3,16 +3,20 @@
 
 namespace IspMonitor\Providers;
 
+use IspMonitor\Repositories\EventRepository;
+use IspMonitor\Repositories\ReservationRepository;
 use IspMonitor\Services\ArrayBasedAuthService;
 use IspMonitor\Services\CachingService;
 use IspMonitor\Services\ErrorHandlingService;
 use IspMonitor\Services\MongoDataService;
+use IspMonitor\Services\RedLockService;
+use IspMonitor\Services\ReservationService;
 use IspMonitor\Services\SpeedTestMongoDataService;
 use IspMonitor\Services\SpeedTestService;
 use Monolog;
+use RandomLib\Factory;
 use Slim;
 
-use Interop\Container\ContainerInterface;
 
 class ServiceProvider
 {
@@ -20,61 +24,16 @@ class ServiceProvider
      * @var array
      */
     private $settings;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * ServiceProvider constructor.
-     * @param ContainerInterface $container
+     * @param array $settings
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($settings)
     {
-        $this->container = $container;
-        $this->settings = $this->container->get('settings');
+        $this->settings = $settings;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-
-    public function initializeContainer()
-    {
-        $this->container['renderer'] = function ($c) {
-            return $this->getRenderer();
-        };
-
-        $this->container['logger'] = function ($c) {
-            return $this->getLogger();
-        };
-
-        $this->container['speedTestService'] = function ($c) {
-            return $this->getSpeedTestService();
-        };
-
-        $this->container['authService'] = function ($c) {
-            return $this->getAuthService();
-        };
-
-        $this->container['errorHandler'] = function ($c) {
-            return $this->getErrorHandler();
-        };
-
-        $this->container['dataService'] = function ($c) {
-            return $this->getMongoDataService();
-        };
-
-        $this->container['speedTestRecordingService'] = function ($c) {
-            return $this->getSpeedTestRecordingService();
-        };
-
-        $this->container['cachingService'] = function ($c) {
-            return $this->getCachingService();
-        };
-
-        return $this->container;
-    }
 
     /**
      * @return Slim\Views\PhpRenderer
@@ -174,6 +133,58 @@ class ServiceProvider
     public function getCachingService()
     {
         return new CachingService($this->getRedisCacheProvider());
+    }
+
+    /**
+     * @return EventRepository
+     */
+    public function getEventRepository()
+    {
+        return new EventRepository($this->getMongoDataService());
+    }
+
+    /**
+     * @return ReservationRepository
+     */
+
+    public function getReservationRepository()
+    {
+        return new ReservationRepository($this->getMongoDataService());
+    }
+
+    /**
+     * @return RedLockService
+     */
+
+    public function getRedLockService()
+    {
+        return new RedLockService(
+            $this->settings['redLockService']['servers'],
+            $this->settings['redLockService']['retryDelay'],
+            $this->settings['redLockService']['retryCount']);
+    }
+
+    /**
+     * @return Factory
+     */
+
+    public function getRandomGeneratorFactory()
+    {
+        return new Factory();
+    }
+
+    /**
+     * @return ReservationService
+     */
+
+    public function getReservationService()
+    {
+        return new ReservationService(
+            $this->getEventRepository(),
+            $this->getReservationRepository(),
+            $this->getRedLockService(),
+            $this->getCachingService(),
+            $this->getRandomGeneratorFactory());
     }
 
 }

@@ -17,8 +17,7 @@ class ReservationRepository extends BaseRepository
     const COLLECTION_NAME = 'reservations';
     const DB_NAME = 'reservation-service';
     const ID_PREFIX = '';
-    const CONFIRMATION_CODE_PREFIX = '';
-    const CONFIRMATION_CODE_LENGTH = 16;
+
 
     /**
      * @return Reservation[]
@@ -63,24 +62,13 @@ class ReservationRepository extends BaseRepository
     protected function prepareReservation(Reservation $reservation)
     {
         if (!$reservation->getId())
-            $reservation->setId(uniqid(static::ID_PREFIX, true));
+            $reservation->setId(uniqid(static::ID_PREFIX));
         if (!$reservation->getDateCreated())
             $reservation->setDateCreated(time());
-        if (!$reservation->getConfirmationCode())
-            $reservation->setConfirmationCode($this->generateConfirmationCode());
         $reservation->validate();
         return $reservation;
     }
 
-    /**
-     * Generates a random string.
-     * @param int $length
-     * @return string
-     */
-    protected function generateConfirmationCode($length = self::CONFIRMATION_CODE_LENGTH)
-    {
-        return substr(md5(uniqid(static::CONFIRMATION_CODE_PREFIX, true)), 0, $length);
-    }
 
     /**
      * @param Reservation $reservation

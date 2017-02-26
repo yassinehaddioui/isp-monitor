@@ -71,7 +71,7 @@ class EventRepository extends BaseRepository
     protected function prepareEvent(Event $event)
     {
         if (!$event->getId())
-            $event->setId(uniqid(static::ID_PREFIX, true));
+            $event->setId(uniqid(static::ID_PREFIX));
         if (!$event->getDateCreated())
             $event->setDateCreated(time());
         if (!$event->getRegistrationDateStart())

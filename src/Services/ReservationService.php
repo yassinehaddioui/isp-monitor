@@ -11,15 +11,22 @@ namespace IspMonitor\Services;
 
 use IspMonitor\Exceptions\EventClosedException;
 use IspMonitor\Exceptions\ReservationAlreadyMadeException;
+use IspMonitor\Exceptions\UnableToAcquireLockException;
 use IspMonitor\Models\AvailabilityResponse;
-use IspMonitor\Models\Event;
 use IspMonitor\Models\Reservation;
 use IspMonitor\Repositories\EventRepository;
 use IspMonitor\Repositories\ReservationRepository;
+use RandomLib\Factory;
+use SecurityLib\Strength;
+use Sumeko\Http\Exception\FailedDependencyException;
 use Sumeko\Http\Exception\NotFoundException;
 
 class ReservationService
 {
+    const CONFIRMATION_CODE_PREFIX = '';
+    const CONFIRMATION_CODE_LENGTH = 16;
+    const CONFIRMATION_CODE_CHARSET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     /**
      * @var EventRepository $eventRepo
      */
@@ -37,6 +44,10 @@ class ReservationService
     /** @var  CachingService $cachingService */
     protected $cachingService;
 
+    /** @var  Factory */
+    protected $randomGeneratorFactory;
+
+
     const RESOURCE_NAME = 'reservation';
     const LOCK_TTL = 500;
     const AVAILABILITY_CACHE_TTL = 60;
@@ -47,15 +58,19 @@ class ReservationService
      * @param ReservationRepository $reservationRepo
      * @param RedLockService $redLockService
      * @param CachingService $cachingService
+     * @param Factory $randomGeneratorFactory
      */
     public function __construct(EventRepository $eventRepo,
-                                ReservationRepository $reservationRepo, RedLockService $redLockService = null,
-                                CachingService $cachingService = null)
+                                ReservationRepository $reservationRepo,
+                                RedLockService $redLockService = null,
+                                CachingService $cachingService = null,
+                                Factory $randomGeneratorFactory = null)
     {
         $this->eventRepo = $eventRepo;
         $this->reservationRepo = $reservationRepo;
         $this->redLockService = $redLockService;
         $this->cachingService = $cachingService;
+        $this->randomGeneratorFactory = $randomGeneratorFactory;
     }
 
     /**
@@ -71,6 +86,9 @@ class ReservationService
 
     public function makeReservation($email, $eventId, $browserSignature = '', $ipAddress = '')
     {
+        if (!$this->redLockService || !$this->cachingService)
+            throw new FailedDependencyException('Missing RedLockService and/or Caching Service.');
+
         /* Check if the event is still open for reservation */
         $available = $this->checkAvailability($eventId);
         if (!$available->isOpen())
@@ -79,6 +97,8 @@ class ReservationService
         /* Try to acquire a lock on the event */
         $resourceLockLey = static::RESOURCE_NAME . '_' . $eventId;
         $lock = $this->redLockService->lock($resourceLockLey, static::LOCK_TTL);
+        if (!$lock)
+            throw new UnableToAcquireLockException();
 
         try {
             /*  Check again now that you acquired the lock. In case someone made a reservation. */
@@ -96,7 +116,8 @@ class ReservationService
                 'email' => $email,
                 'eventId' => $eventId,
                 'browserSignature' => $browserSignature,
-                'ipAddress' => $ipAddress]);
+                'ipAddress' => $ipAddress,
+                'confirmationCode' => $this->generateConfirmationCode()]);
             $reservation = $this->reservationRepo->save($reservation);
 
             /* Unlock the reservations for the event. */
@@ -158,5 +179,20 @@ class ReservationService
             $this->cachingService->set($cacheKey, $response, static::AVAILABILITY_CACHE_TTL);
 
         return $response;
+    }
+
+    /**
+     * Generates a random confirmation code.
+     * @param int $length
+     * @return string
+     * @throws FailedDependencyException
+     */
+    protected function generateConfirmationCode($length = self::CONFIRMATION_CODE_LENGTH)
+    {
+        if (!$this->randomGeneratorFactory)
+            throw new FailedDependencyException('Missing Random Generator Factory.');
+
+        $generator = $this->randomGeneratorFactory->getGenerator(new Strength(Strength::LOW));
+        return $generator->generateString($length, static::CONFIRMATION_CODE_CHARSET);
     }
 }
