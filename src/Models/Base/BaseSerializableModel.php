@@ -19,12 +19,15 @@ abstract class BaseSerializableModel implements JsonSerializable, MongoDB\BSON\S
         return $this->toArray();
     }
 
-    protected function toArray()
+    /**
+     * @return array
+     */
+    public function toArray()
     {
         $array = [];
         foreach ($this as $key => $value) {
-            if (method_exists($this, $method = ('get' . ucfirst($key)))
-                || method_exists($this, $method = ('is' . ucfirst($key)))
+            if (method_exists($this, $method = ('get' . ucfirst(ltrim($key, '_'))))
+                || method_exists($this, $method = ('is' . ucfirst(ltrim($key, '_'))))
             )
                 $array[$key] = $this->$method();
         }
@@ -34,5 +37,15 @@ abstract class BaseSerializableModel implements JsonSerializable, MongoDB\BSON\S
     public function bsonSerialize()
     {
         return $this->jsonSerialize();
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function fromArray($data){
+        foreach($data as $key => $value) {
+            if (property_exists($this, $key))
+                $this->$key = $value;
+        }
     }
 }

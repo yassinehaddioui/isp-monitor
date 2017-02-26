@@ -6,8 +6,8 @@ namespace IspMonitor\Providers;
 use IspMonitor\Services\ArrayBasedAuthService;
 use IspMonitor\Services\CachingService;
 use IspMonitor\Services\ErrorHandlingService;
-use IspMonitor\Services\RecordingService;
-use IspMonitor\Services\SpeedTestRecordingService;
+use IspMonitor\Services\MongoDataService;
+use IspMonitor\Services\SpeedTestMongoDataService;
 use IspMonitor\Services\SpeedTestService;
 use Monolog;
 use Slim;
@@ -140,21 +140,21 @@ class ServiceProvider
     }
 
     /**
-     * @return RecordingService
+     * @return MongoDataService
      */
 
     public function getRecordingService()
     {
-        return new RecordingService($this->getMongoDBDataProvider());
+        return new MongoDataService($this->getMongoDBDataProvider());
     }
 
     /**
-     * @return SpeedTestRecordingService
+     * @return SpeedTestMongoDataService
      */
 
     public function getSpeedTestRecordingService()
     {
-        return new SpeedTestRecordingService($this->getMongoDBDataProvider());
+        return new SpeedTestMongoDataService($this->getMongoDBDataProvider());
     }
 
     /**

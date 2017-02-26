@@ -11,7 +11,7 @@ namespace IspMonitor\Services;
 use IspMonitor\Providers\MongoDBDataProvider;
 use MongoDB\BSON\Serializable;
 
-class RecordingService
+class MongoDataService
 {
     /** @var  MongoDBDataProvider $dataProvider */
     protected $dataProvider;
@@ -46,6 +46,7 @@ class RecordingService
         $collection = $this->client->selectCollection($db, $collection);
         return $collection->insertOne($serializable);
     }
+
 
     /** Returns a specific collection from a specific db.
      * @param $db

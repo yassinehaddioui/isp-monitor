@@ -10,7 +10,7 @@ namespace IspMonitor\Services;
 
 use MongoDB\BSON\Serializable;
 
-class SpeedTestRecordingService extends RecordingService
+class SpeedTestMongoDataService extends MongoDataService
 {
     const DB_NAME = 'speedtest';
     const COLLECTION_NAME = 'logs';

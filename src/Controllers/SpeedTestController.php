@@ -9,8 +9,8 @@
 namespace IspMonitor\Controllers;
 
 use Interop\Container\ContainerInterface;
-use IspMonitor\Services\RecordingService;
-use IspMonitor\Services\SpeedTestRecordingService;
+use IspMonitor\Services\MongoDataService;
+use IspMonitor\Services\SpeedTestMongoDataService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use IspMonitor\Interfaces\SpeedTestService;
@@ -24,7 +24,7 @@ class SpeedTestController extends BaseController
     private $speedTestService;
 
     /**
-     * @var RecordingService
+     * @var MongoDataService
      */
     private $recordingService;
 
@@ -91,7 +91,7 @@ class SpeedTestController extends BaseController
 
     /**
      * Extracts the Recording Service from the container.
-     * @return SpeedTestRecordingService
+     * @return SpeedTestMongoDataService
      */
     protected function getRecordingService()
     {
