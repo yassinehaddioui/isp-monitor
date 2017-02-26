@@ -30,7 +30,7 @@ isp-monitor-mongo:
   volumes_from:
     - isp-monitor-mongodata
   ports:
-    - "27017:27017"
+    - "27018:27017"
   command: --smallfiles --rest
 
 isp-monitor-php-fpm:

@@ -52,12 +52,18 @@ class Event extends Base\BaseSerializableModel
     protected $lastUpdate;
 
     /**
+     * @var string $creatorId
+     */
+    protected $creatorId;
+
+    /**
      * Event constructor.
      * @param array $dataArray
      */
-    public function __construct($dataArray)
+    public function __construct($dataArray = [])
     {
-        $this->fromArray($dataArray);
+        if (!empty($dataArray))
+            $this->fromArray($dataArray);
     }
 
     /**
@@ -258,4 +264,16 @@ class Event extends Base\BaseSerializableModel
         return $this;
     }
 
+    /**
+     *
+     */
+    public function validate(){
+        $exceptions = [];
+        if (!$this->getName())
+            $exceptions[] = "Name is required.";
+        if (!$this->getDateStart() || !$this->getDateEnd())
+            $exceptions[] = "Date start/end required.";
+        if (!empty($exceptions))
+            throw new \InvalidArgumentException(implode(", ", $exceptions));
+    }
 }
