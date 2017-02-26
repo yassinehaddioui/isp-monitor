@@ -37,6 +37,10 @@ class Reservation extends BaseSerializableModel
      * @var string $browserSignature
      */
     protected $browserSignature = '';
+    /**
+     * @var string $confirmationCode
+     */
+    protected $confirmationCode = '';
 
     /**
      * Reservation constructor.
@@ -155,6 +159,26 @@ class Reservation extends BaseSerializableModel
         $this->browserSignature = $browserSignature;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationCode()
+    {
+        return $this->confirmationCode;
+    }
+
+    /**
+     * @param string $confirmationCode
+     * @return Reservation
+     */
+    public function setConfirmationCode($confirmationCode)
+    {
+        $this->confirmationCode = $confirmationCode;
+        return $this;
+    }
+
+
 
     public function validate(){
         $exceptions = [];

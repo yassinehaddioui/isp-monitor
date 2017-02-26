@@ -17,6 +17,8 @@ class ReservationRepository extends BaseRepository
     const COLLECTION_NAME = 'reservations';
     const DB_NAME = 'reservation-service';
     const ID_PREFIX = '';
+    const CONFIRMATION_CODE_PREFIX = '';
+    const CONFIRMATION_CODE_LENGTH = 16;
 
     /**
      * @return Reservation[]
@@ -51,7 +53,7 @@ class ReservationRepository extends BaseRepository
      */
     public function findByEmailAndEventId($email, $eventId)
     {
-        return $this->normalize($this->getCollection()->find(['email' => $email, 'eventId'  =>  $eventId]));
+        return $this->normalize($this->getCollection()->find(['email' => $email, 'eventId' => $eventId]));
     }
 
     /**
@@ -64,8 +66,20 @@ class ReservationRepository extends BaseRepository
             $reservation->setId(uniqid(static::ID_PREFIX, true));
         if (!$reservation->getDateCreated())
             $reservation->setDateCreated(time());
+        if (!$reservation->getConfirmationCode())
+            $reservation->setConfirmationCode($this->generateConfirmationCode());
         $reservation->validate();
         return $reservation;
+    }
+
+    /**
+     * Generates a random string.
+     * @param int $length
+     * @return string
+     */
+    protected function generateConfirmationCode($length = self::CONFIRMATION_CODE_LENGTH)
+    {
+        return substr(md5(uniqid(static::CONFIRMATION_CODE_PREFIX, true)), 0, $length);
     }
 
     /**
@@ -81,7 +95,7 @@ class ReservationRepository extends BaseRepository
             $reservation,
             ['upsert' => true]);
         if (!$result->getUpsertedCount() && !$result->getModifiedCount())
-            throw new SaveFailedException();
+            throw new SaveFailedException('Nothing was saved. Maybe no changes were necessary.');
         return $reservation;
     }
 

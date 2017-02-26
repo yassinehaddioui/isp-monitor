@@ -12,6 +12,10 @@ use Interop\Container\ContainerInterface;
 use IspMonitor\Services\MongoDataService;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use IspMonitor\Repositories\EventRepository;
+use IspMonitor\Repositories\ReservationRepository;
+use IspMonitor\Services\RedLockService;
+use IspMonitor\Services\ReservationService;
 
 class TestController extends BaseController
 {
@@ -27,17 +31,19 @@ class TestController extends BaseController
 
     public function getTest(Request $request, Response $response, $args)
     {
+        $ipAddress = $request->getAttribute('ip_address');
         /**
          * @var MongoDataService
          */
         $MongoDataService = $this->container->get('dataService');
-        $eventRepo = new \IspMonitor\Repositories\EventRepository($MongoDataService);
+        $eventRepo = new EventRepository($MongoDataService);
         $cachingService = $this->container->get('cachingService');
-        $reservationRepo = new \IspMonitor\Repositories\ReservationRepository($MongoDataService);
-        $redLockService = new \IspMonitor\Services\RedLockService([['isp-monitor-redis', 6379, 0.01]]);
-        $reservationService = new \IspMonitor\Services\ReservationService($eventRepo, $reservationRepo, $redLockService, $cachingService);
-        $reservation = $reservationService->makeReservation(uniqid() . '@hadds.com', 'ev58b2653bd2abe');
-        return $this->jsonDataResponse($response, $reservation);
+        $reservationRepo = new ReservationRepository($MongoDataService);
+        $redLockService = new RedLockService([['isp-monitor-redis', 6379, 0.01]]);
+        $reservationService = new ReservationService($eventRepo, $reservationRepo, $redLockService, $cachingService);
+        $data = $reservationService->makeReservation(uniqid() . '@hadds.com', 'ev58b2653bd2abe', 'signature', $ipAddress);
+//        $data = $reservationService->checkAvailability('ev58b2653bd2abe');
+        return $this->jsonDataResponse($response, $data);
     }
 
 }

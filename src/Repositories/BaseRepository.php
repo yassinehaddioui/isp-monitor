@@ -21,6 +21,7 @@ abstract class BaseRepository
 
     const COLLECTION_NAME = '';
     const DB_NAME = '';
+    const ID_PREFIX = '';
 
     /**
      * EventRepository constructor.
