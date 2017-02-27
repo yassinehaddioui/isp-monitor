@@ -56,6 +56,12 @@ class DependencyInjector
             return $provider->getReservationService();
         };
 
+        $container['eventService'] = function ($c) {
+            /** @var ServiceProvider $provider */
+            $provider = $c['serviceProvider'];
+            return $provider->getEventService();
+        };
+
         $container['reservationRepository'] = function ($c) {
             /** @var ServiceProvider $provider */
             $provider = $c['serviceProvider'];

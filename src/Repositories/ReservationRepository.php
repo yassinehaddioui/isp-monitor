@@ -69,6 +69,14 @@ class ReservationRepository extends BaseRepository
         return $reservation;
     }
 
+    /**
+     * @param $eventId
+     * @return int
+     */
+    public function countReservationsInEvent($eventId)
+    {
+        return $this->getCollection()->count(['eventId' => $eventId]);
+    }
 
     /**
      * @param Reservation $reservation

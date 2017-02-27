@@ -30,7 +30,7 @@
     "redLockService":{
       "servers":[["isp-monitor-redis", 6379, 0.01]],
       "retryDelay": 100,
-      "retryCount":10
+      "retryCount": 30
     }
   }
 }

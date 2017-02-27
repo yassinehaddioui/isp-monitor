@@ -38,6 +38,11 @@ class Event extends Base\BaseSerializableModel
      * @var int $maximumCapacity
      */
     protected $maximumCapacity = 0;
+
+    /**
+     * @var int $reservationCount
+     */
+    protected $reservationCount = 0;
     /**
      * @var bool $exposeReservations
      */
@@ -211,6 +216,43 @@ class Event extends Base\BaseSerializableModel
     }
 
     /**
+     * @return int
+     */
+    public function getReservationCount()
+    {
+        return $this->reservationCount;
+    }
+
+    /**
+     * @param int $reservationCount
+     * @return Event
+     */
+    public function setReservationCount($reservationCount)
+    {
+        $this->reservationCount = $reservationCount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatorId()
+    {
+        return $this->creatorId;
+    }
+
+    /**
+     * @param string $creatorId
+     * @return Event
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creatorId = $creatorId;
+        return $this;
+    }
+
+
+    /**
      * @return bool
      */
     public function isExposeReservations()
@@ -275,7 +317,7 @@ class Event extends Base\BaseSerializableModel
             $exceptions[] = "Date start/end required.";
         if ($this->getDateEnd() < time())
             $exceptions[] = "Date end cannot be in the past.";
-        
+
         if (!empty($exceptions))
             throw new \InvalidArgumentException(implode(", ", $exceptions));
     }

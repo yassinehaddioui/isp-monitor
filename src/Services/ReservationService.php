@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by -
- * User: yassinehaddioui
- * Date: 2/26/17
- * Time: 12:24 AM
- */
+
 
 namespace IspMonitor\Services;
 
-
-use Assert\InvalidArgumentException;
 use IspMonitor\Exceptions\EventClosedException;
 use IspMonitor\Exceptions\ReservationAlreadyMadeException;
 use IspMonitor\Exceptions\UnableToAcquireLockException;
@@ -123,7 +116,10 @@ class ReservationService
                 'ipAddress' => $ipAddress,
                 'confirmationCode' => $this->generateConfirmationCode()]);
             $reservation = $this->reservationRepo->save($reservation);
-
+            $reservationCount = $this->reservationRepo->countReservationsInEvent($eventId);
+            $event = $this->eventRepo->findById($eventId);
+            $event->setReservationCount($reservationCount);
+            $this->eventRepo->save($event);
             /* Unlock the reservations for the event. */
             $this->redLockService->unlock($lock);
 
@@ -157,8 +153,7 @@ class ReservationService
         $event = $this->eventRepo->findById($eventId);
         if (!$event)
             throw new NotFoundException('Event not found.');
-        $reservations = $this->reservationRepo->findByEventId($eventId);
-        $reservationsCount = count($reservations);
+        $reservationsCount = $event->getReservationCount();
 
         /* Check for capacity */
         $open = (!$event->getMaximumCapacity() || $event->getMaximumCapacity() > $reservationsCount);
@@ -171,9 +166,7 @@ class ReservationService
         if ($event->getRegistrationDateStart() && $event->getRegistrationDateStart() > time())
             $open = false;
 
-        /* Don't expose reservations data if not needed */
-        if (!$event->isExposeReservations())
-            $reservations = [];
+        $reservations = $event->isExposeReservations() ? $this->reservationRepo->findByEventId($eventId) : [];
 
         /* Prepare response */
         $response = new AvailabilityResponse($event, $reservations, $reservationsCount, $open);

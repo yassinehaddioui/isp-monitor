@@ -8,6 +8,7 @@ use IspMonitor\Repositories\ReservationRepository;
 use IspMonitor\Services\ArrayBasedAuthService;
 use IspMonitor\Services\CachingService;
 use IspMonitor\Services\ErrorHandlingService;
+use IspMonitor\Services\EventService;
 use IspMonitor\Services\MongoDataService;
 use IspMonitor\Services\RedLockService;
 use IspMonitor\Services\ReservationService;
@@ -185,6 +186,15 @@ class ServiceProvider
             $this->getRedLockService(),
             $this->getCachingService(),
             $this->getRandomGeneratorFactory());
+    }
+
+    /**
+     * @return EventService
+     */
+
+    public function getEventService()
+    {
+        return new EventService($this->getEventRepository(), $this->getReservationRepository());
     }
 
 }

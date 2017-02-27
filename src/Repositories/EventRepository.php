@@ -64,6 +64,7 @@ class EventRepository extends BaseRepository
         return $this->normalize($this->getCollection()->find($filter));
     }
 
+
     /**
      * @param Event $event
      * @return Event

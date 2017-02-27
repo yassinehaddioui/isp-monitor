@@ -38,3 +38,9 @@ $app->post('/api/1.0/reservation', function (Request $request, Response $respons
     $controller = new Controllers\ReservationController($reservationService);
     return $controller->makeReservation($request, $response, $args);
 });
+
+$app->get('/api/1.0/event/{id}', function (Request $request, Response $response, $args) use ($app) {
+    $eventService = $app->getContainer()->get('eventService');
+    $controller = new Controllers\EventController($eventService);
+    return $controller->getEvent($request, $response, $args);
+});
