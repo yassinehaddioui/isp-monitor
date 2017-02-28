@@ -40,6 +40,8 @@ abstract class BaseSerializableModel implements JsonSerializable, MongoDB\BSON\S
     }
 
     /**
+     * Sets fields based on array keys.
+     * Use only for flat structures, nested objects will need special treatment.
      * @param array $data
      */
     protected function fromArray($data){

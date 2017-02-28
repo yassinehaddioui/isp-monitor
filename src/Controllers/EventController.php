@@ -28,6 +28,10 @@ class EventController extends BaseController
 
     }
 
+    public function createEvent(Request $request, Response $response) {
+
+    }
+
     public function getEvent(Request $request, Response $response, $args)
     {
         $eventId = $args['id'];

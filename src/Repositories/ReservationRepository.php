@@ -62,7 +62,7 @@ class ReservationRepository extends BaseRepository
     protected function prepareReservation(Reservation $reservation)
     {
         if (!$reservation->getId())
-            $reservation->setId(uniqid(static::ID_PREFIX));
+            $reservation->setId(uniqid(static::ID_PREFIX, true));
         if (!$reservation->getDateCreated())
             $reservation->setDateCreated(time());
         $reservation->validate();
