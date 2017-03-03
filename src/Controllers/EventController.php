@@ -4,6 +4,7 @@
 namespace IspMonitor\Controllers;
 
 
+use IspMonitor\Models\EventFilter;
 use IspMonitor\Services\EventService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -12,6 +13,8 @@ class EventController extends BaseController
 {
     /** @var  EventService $eventService */
     protected $eventService;
+    const FILTER_CLASS = 'EventFilter';
+
 
     /**
      * EventController constructor.
@@ -25,7 +28,8 @@ class EventController extends BaseController
 
     public function getEvents(Request $request, Response $response, $args)
     {
-
+        $filter = $this->getFilter($request, static::FILTER_CLASS);
+        return $this->jsonDataResponse($response, $this->eventService->getEvents($filter), ['filter'    =>  $filter]);
     }
 
     public function createEvent(Request $request, Response $response) {

@@ -4,10 +4,16 @@ namespace IspMonitor\Controllers;
 
 use Interop\Container\ContainerInterface;
 use IspMonitor\Utilities\Environment;
+use Slim\Http\Request;
 use Slim\Http\Response;
+use IspMonitor\Models\EventFilter;
+use IspMonitor\Models\BaseFilter;
 
 class BaseController
 {
+
+    const DEFAULT_LIST_LIMIT = 100;
+
     /**
      * @var ContainerInterface
      */
@@ -46,6 +52,36 @@ class BaseController
             $result['meta'] = $meta;
         }
         return $response->withJson($result);
+    }
+
+    /**
+     * @param Request $request
+     * @param $class
+     * @return BaseFilter|EventFilter
+     */
+
+    protected function getFilter(Request $request, $class = null)
+    {
+        $filter = new BaseFilter();
+        $limit = $request->getQueryParam('limit') ?: null;
+        $sortBy = $request->getQueryParam('sortBy') ?: null;
+        $sortOrder = $request->getQueryParam('sortOrder') ?: null;
+        $preset = $request->getQueryParam('preset') ?: null;
+
+        switch ($class) {
+            case 'EventFilter':
+                $filter = new EventFilter();
+                if ($preset)
+                    $filter->setPreset($preset);
+        }
+        if ($limit)
+            $filter->setLimit($limit);
+        if ($sortBy)
+            $filter->setSortBy($sortBy);
+        if ($sortOrder)
+            $filter->setSortOrder($sortOrder);
+
+        return $filter;
     }
 
 }

@@ -44,3 +44,9 @@ $app->get('/api/1.0/event/{id}', function (Request $request, Response $response,
     $controller = new Controllers\EventController($eventService);
     return $controller->getEvent($request, $response, $args);
 });
+
+$app->get('/api/1.0/events', function (Request $request, Response $response, $args) use ($app) {
+    $eventService = $app->getContainer()->get('eventService');
+    $controller = new Controllers\EventController($eventService);
+    return $controller->getEvents($request, $response, $args);
+});

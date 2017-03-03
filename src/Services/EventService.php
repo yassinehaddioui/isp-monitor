@@ -9,6 +9,8 @@
 namespace IspMonitor\Services;
 
 
+use IspMonitor\Models\Event;
+use IspMonitor\Models\EventFilter;
 use IspMonitor\Repositories\EventRepository;
 use IspMonitor\Repositories\ReservationRepository;
 
@@ -18,6 +20,8 @@ class EventService
     protected $eventRepo;
     /** @var ReservationRepository $reservationRepo */
     protected $reservationRepo;
+
+    const FILTER_PRESET_UPCOMING = 'upcoming';
 
     /**
      * EventService constructor.
@@ -30,9 +34,23 @@ class EventService
         $this->reservationRepo = $reservationRepo;
     }
 
-    public function getEvents($filters)
-    {
+    /**
+     * @param EventFilter $filter
+     * @return Event[]
+     */
 
+    public function getEvents(EventFilter $filter)
+    {
+        switch ($filter->getPreset()){
+            case EventFilter::PRESET_UPCOMING:
+                return $this->eventRepo->getUpcomingEvents();
+            case EventFilter::PRESET_OPEN:
+                return $this->eventRepo->getEventsOpenForRegistration();
+            case EventFilter::PRESET_ONGOING:
+                return $this->eventRepo->getCurrentAndFutureEvents();
+            default:
+                return $this->eventRepo->getAll();
+        }
     }
 
     public function getEvent($eventId)
