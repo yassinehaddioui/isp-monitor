@@ -17,7 +17,8 @@
     "authService": {
       "apiKeys": [
         "yassineX",
-        "yassineY"
+        "yassineY",
+        "apiKey"
       ]
     },
     "mongoDB": {
@@ -29,8 +30,8 @@
     },
     "redLockService":{
       "servers":[["isp-monitor-redis", 6379, 0.01]],
-      "retryDelay": 100,
-      "retryCount": 30
+      "retryDelay": 5,
+      "retryCount": 100
     }
   }
 }

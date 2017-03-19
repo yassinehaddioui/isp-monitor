@@ -40,6 +40,7 @@ isp-monitor-php-fpm:
   volumes:
     - ..:/var/www/isp-monitor
     - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+    - ../tmp:/tmp
   links:
     - isp-monitor-redis
     - isp-monitor-mongo
