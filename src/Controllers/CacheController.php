@@ -57,7 +57,8 @@ class CacheController extends BaseController
             $key = $args['key'];
             $ttl = $request->getParam('ttl') ?: 0;
             $data = $request->getParam('data');
-            return $this->jsonDataResponse($response, $this->cachingService->set($key, $data, $ttl));
+            $this->cachingService->set($key, $data, $ttl);
+            return $this->jsonDataResponse($response, $data, ['ttl' => $ttl]);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestException($e->getMessage());
         }
