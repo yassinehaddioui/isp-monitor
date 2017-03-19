@@ -20,5 +20,4 @@ RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" > /etc/php/7.1/mods-available/xdebug.ini \
     && echo "xdebug.profiler_enable_trigger=on" >> /etc/php/7.1/mods-available/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /etc/php/7.1/mods-available/xdebug.ini
-
-RUN phpenmod xdebug
+    && phpenmod xdebug
