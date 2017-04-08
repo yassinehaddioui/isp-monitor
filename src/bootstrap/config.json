@@ -22,14 +22,14 @@
       ]
     },
     "mongoDB": {
-      "connectionString": "mongodb:\/\/isp-monitor-mongo:27017"
+      "connectionString": "mongodb:\/\/php-app-mongo:27017"
     },
     "redis": {
-      "host": "isp-monitor-redis",
+      "host": "php-app-redis",
       "port": 6379
     },
     "redLockService":{
-      "servers":[["isp-monitor-redis", 6379, 0.01]],
+      "servers":[["php-app-redis", 6379, 0.01]],
       "retryDelay": 5,
       "retryCount": 100
     }
